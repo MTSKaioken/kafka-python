@@ -27,16 +27,6 @@ produtos: Dict[int, ProductDTO] = {
     5: ProductDTO(sku="005", description="Óculos de Sol", quantity=75, price=49.99),
 }
 
-
-@app.get('/api/teste')
-async def getTeste():
-    product_service = ProductService()
-    products = product_service.get_all_products()
-    for product in products:
-        print(product)
-    return {'mensagem': 0}
-
-
 @app.get('/api/produtos')
 async def getProdutos():
     product_service = ProductService()
