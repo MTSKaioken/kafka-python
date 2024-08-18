@@ -15,3 +15,9 @@ class ProductDao:
 
     def get_product_by_sku(self, sku: str):
         return self.client.find_one({'sku': sku})
+
+    def delete_product_by_sku(self, sku: str):
+        self.client.delete_one({'sku': sku})
+
+    def update_product_by_sku(self, sku: str, model: Product):
+        self.client.update_one({'sku': sku}, {'$set': model.__dict__})

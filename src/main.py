@@ -51,10 +51,16 @@ async def getProduto(product_sku: str):
     return {'mensagem': product}
 
 
-@app.delete('/api/produtos/{product_id}')
-async def deleteProduto(product_id: int):
-    produtos.__delitem__(product_id)
-    return {'mensagem': 0}
+@app.delete('/api/produtos/{product_sku}')
+async def deleteProduto(product_sku: str):
+    product_service = ProductService()
+    try:
+        status_delete = product_service.delete_product_by_sku(product_sku)
+        return {'mensagem': status_delete}
+    except Exception as e:
+        return {'mensagem': str(e)}
+
+
 
 
 @app.post('/api/produtos')

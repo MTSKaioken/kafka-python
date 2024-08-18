@@ -20,7 +20,24 @@ class ProductService:
 
     def get_product_by_sku(self, sku: str):
         product = self.product_dao.get_product_by_sku(sku)
-        # todo estudar o **
-        dto = ProductDTO(**product)
-        return dto
+        if product:
+            # todo estudar o **
+            dto = ProductDTO(**product)
+            return dto
+        else:
+            return None
+
+    def delete_product_by_sku(self, sku: str):
+        found = self.get_product_by_sku(sku)
+        try:
+            if found:
+                self.product_dao.delete_product_by_sku(sku)
+                return 'deletado com sucesso!'
+            else:
+                return f'SKU {sku} não encontrado!'
+        except Exception as e:
+            print(e)
+            raise RuntimeError(f'erro ao deletar produto de SKU {sku}!')
+
+
 
