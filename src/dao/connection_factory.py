@@ -8,7 +8,5 @@ def get_connection():
     try:
         db_name = client['estoque']
         return db_name
-        # customers = dbname['customers']
-        # resp = customers.find()
     except Exception as e:
         print(e)
