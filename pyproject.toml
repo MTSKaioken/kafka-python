@@ -12,6 +12,7 @@ uvicorn = {extras = ["standard"], version = "^0.30.6"}
 schedule = "^1.2.2"
 requests = "^2.32.3"
 confluent-kafka = "^2.5.0"
+pymongo = {extras = ["srv"], version = "^4.8.0"}
 
 
 
