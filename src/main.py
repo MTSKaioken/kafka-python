@@ -61,7 +61,20 @@ async def update_product(product_sku: str, produto: ProductDTO):
     except Exception as e:
         return {'mensagem': str(e)}
 
-uvicorn.run(app, host='127.0.0.1', port=8000)
+
+# @app.patch('/api/v1/produtos/{product_sku}')
+# async def patch_update_product(product_sku: str, produto: ProductDTO):
+#     product_service = ProductService()
+#     try:
+#         status_update = product_service.update_product_by_sku(product_sku, produto)
+#         return {'mensagem': status_update}
+#     except Exception as e:
+#         return {'mensagem': str(e)}
+
+
+URL_HOST_PROJECT = os.getenv('URL_HOST_PROJECT')
+URL_PORT_PROJECT = os.getenv('URL_PORT_PROJECT')
+uvicorn.run(app, host=URL_HOST_PROJECT, port=int(URL_PORT_PROJECT))
 
 # @app.patch('/api/produtos/{product_sku}')
 # async def update_partial_product(product_sku: str):
