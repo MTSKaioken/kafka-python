@@ -1,6 +1,6 @@
 from src.dao.product_dao import ProductDao
 from src.dtos.product_dto import ProductDTO
-import json
+
 
 class ProductService:
 
@@ -10,6 +10,7 @@ class ProductService:
     def create_product(self, dto: ProductDTO):
         model = dto.to_model()
         self.product_dao.add_product(model)
+
     def get_all_products(self):
         products = self.product_dao.get_all_products()
         list = []
@@ -39,5 +40,14 @@ class ProductService:
             print(e)
             raise RuntimeError(f'erro ao deletar produto de SKU {sku}!')
 
+    def update_product_by_sku(self, sku: str, dto: ProductDTO):
+        found = self.get_product_by_sku(sku)
+        if found:
+            dto.sku = sku
+            model = dto.to_model()
+            self.product_dao.update_product_by_sku(sku, model)
+            return f'{sku} atualizado com sucesso!'
+        else:
+            return f'SKU {sku} não encontrado!'
 
 

@@ -1,8 +1,9 @@
 import os
-from typing import Dict
 
+import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
+
 from src.services.product_service import ProductService
 from src.dtos.product_dto import ProductDTO
 
@@ -19,30 +20,23 @@ def load_environment():
 load_environment()
 app = FastAPI()
 
-produtos: Dict[int, ProductDTO] = {
-    1: ProductDTO(sku="001", description="Camiseta Básica", quantity=100, price=29.99),
-    2: ProductDTO(sku="002", description="Calça Jeans", quantity=50, price=79.99),
-    3: ProductDTO(sku="003", description="Tênis Esportivo", quantity=30, price=119.99),
-    4: ProductDTO(sku="004", description="Jaqueta de Couro", quantity=20, price=199.99),
-    5: ProductDTO(sku="005", description="Óculos de Sol", quantity=75, price=49.99),
-}
 
-@app.get('/api/produtos')
-async def getProdutos():
+@app.get('/api/v1/produtos')
+async def get_all_products():
     product_service = ProductService()
     products = product_service.get_all_products()
     return {'mensagem': products}
 
 
-@app.get('/api/produtos/{product_sku}')
-async def getProduto(product_sku: str):
+@app.get('/api/v1/produtos/{product_sku}')
+async def get_product(product_sku: str):
     product_service = ProductService()
     product = product_service.get_product_by_sku(product_sku)
     return {'mensagem': product}
 
 
-@app.delete('/api/produtos/{product_sku}')
-async def deleteProduto(product_sku: str):
+@app.delete('/api/v1/produtos/{product_sku}')
+async def delete_product(product_sku: str):
     product_service = ProductService()
     try:
         status_delete = product_service.delete_product_by_sku(product_sku)
@@ -51,10 +45,29 @@ async def deleteProduto(product_sku: str):
         return {'mensagem': str(e)}
 
 
-
-
-@app.post('/api/produtos')
-async def postProduto(produto: ProductDTO):
+@app.post('/api/v1/produtos')
+async def create_product(produto: ProductDTO):
     product_service = ProductService()
     product_service.create_product(produto)
     return {'mensagem': produto}
+
+
+@app.put('/api/v1/produtos/{product_sku}')
+async def update_product(product_sku: str, produto: ProductDTO):
+    product_service = ProductService()
+    try:
+        status_update = product_service.update_product_by_sku(product_sku, produto)
+        return {'mensagem': status_update}
+    except Exception as e:
+        return {'mensagem': str(e)}
+
+uvicorn.run(app, host='127.0.0.1', port=8000)
+
+# @app.patch('/api/produtos/{product_sku}')
+# async def update_partial_product(product_sku: str):
+#     product_service = ProductService()
+#     try:
+#         status_delete = product_service.delete_product_by_sku(product_sku)
+#         return {'mensagem': status_delete}
+#     except Exception as e:
+#         return {'mensagem': str(e)}

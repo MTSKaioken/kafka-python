@@ -21,3 +21,6 @@ class ProductDao:
 
     def update_product_by_sku(self, sku: str, model: Product):
         self.client.update_one({'sku': sku}, {'$set': model.__dict__})
+
+    def update_product_by_sku(self, sku: str, model: Product):
+        self.client.update_one({'sku': sku}, {'$set': model.__dict__}, )

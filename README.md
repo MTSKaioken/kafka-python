@@ -31,4 +31,8 @@ Para rodar o software na porta 8000
 - [ ] melhorar a arquitetura de módulos do projeto
 - [ ] migrations para subir o esquema de collections no mongodb
 - [ ] seeders para alimentar um pouco a collection.
-- [ ] parse DTO x Entidade
+- [ ] criar um middleware para controlar melhor a segurança na API
+- [ ] retornar os status codes condizentes com o que será retornado
+- [ ] criar um obj de retorno com os field padrões a serem retornados
+ 
+- [x] parse DTO x Entidade
