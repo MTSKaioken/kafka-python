@@ -3,6 +3,8 @@ import os
 import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
+
+from src.middlewares.rate_limiter_middleware import RateLimiterMiddleware
 from src.routes import product_route
 
 
@@ -17,7 +19,11 @@ def load_environment():
 
 load_environment()
 app = FastAPI()
+
+app.add_middleware(RateLimiterMiddleware)
 app.include_router(product_route.router)
+
+
 
 URL_HOST_PROJECT = os.getenv('URL_HOST_PROJECT')
 URL_PORT_PROJECT = os.getenv('URL_PORT_PROJECT')
