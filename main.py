@@ -1,6 +1,9 @@
 import os
+from contextlib import asynccontextmanager
+from datetime import datetime
 
 import uvicorn
+from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
@@ -18,12 +21,24 @@ def load_environment():
 
 
 load_environment()
-app = FastAPI()
+
+def do_work():
+    print(f'{datetime.now()} executando job')
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler.add_job(do_work, "interval", seconds=5)
+    scheduler.start()
+    print('subiu')
+    yield
+    print('terminou de subir')
+
+
+app = FastAPI(lifespan=lifespan)
+scheduler = BackgroundScheduler()
 
 app.add_middleware(RateLimiterMiddleware)
 app.include_router(product_route.router)
-
-
 
 URL_HOST_PROJECT = os.getenv('URL_HOST_PROJECT')
 URL_PORT_PROJECT = os.getenv('URL_PORT_PROJECT')
